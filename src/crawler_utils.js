@@ -98,7 +98,7 @@ exports.handleMaster = async (page, requestQueue, input) => {
 };
 
 exports.handleDetail = async (page, request) => {
-    const { titleXp, viewCountXp, uploadDateXp, likesXp, dislikesXp, channelXp, subscribersXp, descriptionXp } = CONSTS.SELECTORS.VIDEO;
+    const { titleXp, viewCountXp, uploadDateXp, likesXp, dislikesXp, channelXp, subscribersXp, descriptionXp, commentXp } = CONSTS.SELECTORS.VIDEO;
 
     log.info(`handling detail url ${request.url}`);
 
@@ -141,6 +141,11 @@ exports.handleDetail = async (page, request) => {
     log.debug(`got numberOfSubscribers as ${numberOfSubscribers}`);
 
     const description = await utils.getDataFromXpath(page, descriptionXp, 'innerHTML');
+    
+    const commentsHtml = await utils.getDataFromXpath(page, commentXp, 'innerHTML');
+    for (const comment of commentsHtml) {        
+        log.debug(`got comment as ${comment}`);
+    }
 
     await Apify.pushData({
         title,
